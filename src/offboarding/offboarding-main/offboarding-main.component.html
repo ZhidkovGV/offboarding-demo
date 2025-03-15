@@ -1,0 +1,20 @@
+@let processes = processes$ | async;
+
+<input type="text"
+placeholder="Employee name or department"
+aria-label="Employee name or department"
+matInput
+
+[matAutocomplete]="auto">
+<mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+@for (option of filteredOptions | async; track option) {
+<mat-option [value]="option">{{option}}</mat-option>
+}
+</mat-autocomplete>
+@if (processes) {
+  <app-offboarding-grid [processes]="processes!" />
+} @else {
+  <div class="flex items-center justify-center">
+    <mat-spinner />
+  </div>
+}
