@@ -16,7 +16,7 @@ import {
   Validators,
 } from "@angular/forms";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
-import { OFFBOARDING_STATUS_TO_LABEL } from "../offboarding-status";
+import { OFFBOARDING_STATUS_LABELS } from "../offboarding-status";
 import { OffboardingStatus } from "../offboarding-service";
 
 const FORM_CHANGE_DEBOUNCE = 200;
@@ -54,10 +54,7 @@ export class OffboardingProcessSearchFilterComponent {
       { validators: Validators.required },
     ),
   });
-  readonly offboardingStatuses = Array.from(
-    OFFBOARDING_STATUS_TO_LABEL,
-    ([status, label]) => ({ status, label }),
-  );
+  readonly offboardingStatuses = OFFBOARDING_STATUS_LABELS
 
   private readonly searchChange$ = this.filterForm.valueChanges.pipe(
     debounceTime(FORM_CHANGE_DEBOUNCE),

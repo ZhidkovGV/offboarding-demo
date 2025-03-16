@@ -7,6 +7,10 @@ export const OFFBOARDING_STATUS_TO_LABEL = new Map<OffboardingStatus, string>([
   [OffboardingStatus.Complete, "Offboarded"],
 ]);
 
+export const OFFBOARDING_STATUS_LABELS = Array.from(
+  OFFBOARDING_STATUS_TO_LABEL,
+  ([status, label]) => ({ status, label }),
+);
 @Pipe({
   name: "offboardingStatus",
 })
