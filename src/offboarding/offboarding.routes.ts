@@ -16,7 +16,6 @@ export const OFFBOARDING_ROUTES: Routes = [
           {
             path: "processes",
             component: OffboardingProcessesComponent,
-            children: [{ path: ":id", component: ProcessDetailsComponent }],
           },
           {
             path: "equipment",
@@ -29,6 +28,7 @@ export const OFFBOARDING_ROUTES: Routes = [
           },
         ],
       },
+      { path: "processes/:id", component: ProcessDetailsComponent },
     ],
   },
 ];
