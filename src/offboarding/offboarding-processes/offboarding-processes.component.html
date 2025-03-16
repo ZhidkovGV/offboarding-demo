@@ -1,0 +1,16 @@
+@let processes = processes$ | async;
+
+<app-offboarding-process-search-filter
+  (filterChange)="offboardingFilter.set($event)"
+/>
+
+@if (processes) {
+  <app-offboarding-grid
+    [processes]="processes!"
+    [filter]="offboardingFilter()"
+  />
+} @else {
+  <div class="flex items-center justify-center">
+    <mat-spinner />
+  </div>
+}
