@@ -16,9 +16,9 @@ export class OffboardingProcessService {
   }
 
   get(id: string): Observable<OffboardingProcess> {
-    return this.client.get<OffboardingProcess>(this.offboardProcessUrl, {
-      params: { id },
-    });
+    return this.client.get<OffboardingProcess>(
+      `${this.offboardProcessUrl}/${id}`,
+    );
   }
 
   patch(id: string, {}): Observable<boolean> {
