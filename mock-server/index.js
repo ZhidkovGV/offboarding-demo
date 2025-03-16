@@ -79,6 +79,8 @@ const getMockDB = () => {
       id: `${i}_offboarding_id`,
       exitInterviewDate:
         Date.now() + MS_IN_DAY * Math.floor(Math.random() * 3 + 1),
+      startDate: Date.now() - MS_IN_DAY * Math.floor(Math.random() * 3 + 1),
+      targetDate: Date.now() + MS_IN_DAY * Math.floor(Math.random() * 10 + 1),
     };
   });
 };
