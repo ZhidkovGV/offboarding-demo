@@ -1,1 +1,57 @@
-<p>employee-details works!</p>
+@let process = processDetails();
+<div class="w-full h-full flex flex-col">
+  <div class="flex items-start justify-start">
+    <button mat-icon-button>
+      <mat-icon
+        fontIcon="arrow_back_ios"
+        class="cursor-pointer"
+        (click)="goBack()"
+      ></mat-icon>
+    </button>
+    <h2 class="text-4xl">{{ process?.employee?.name }}</h2>
+  </div>
+
+  @if (process) {
+    <div class="mt-8 flex-col">
+      <mat-expansion-panel [expanded]="process.startDate && process.targetDate">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="text-xl">General Info</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-offboarding-general-form [process]="process" />
+      </mat-expansion-panel>
+
+      <div class="mt-2">
+        <mat-expansion-panel
+          [expanded]="process.jobCertificateRecieved && process.targetDate"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title class="text-xl"> Job Certificate </mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-certificate-form />
+        </mat-expansion-panel>
+      </div>
+
+      <div class="mt-2">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title class="text-xl"> Exit Interview </mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-exit-interview-form />
+        </mat-expansion-panel>
+      </div>
+
+      <div class="mt-2">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title class="text-xl"> Equipment </mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-offboarding-equipment-form />
+        </mat-expansion-panel>
+      </div>
+    </div>
+  } @else {
+    <div class="flex items-center justify-center">
+      <mat-spinner />
+    </div>
+  }
+</div>

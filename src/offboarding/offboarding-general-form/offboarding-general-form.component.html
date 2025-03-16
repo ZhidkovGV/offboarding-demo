@@ -1,0 +1,58 @@
+<form [formGroup]="form" class="flex mt-2 justify-between items-center">
+  <div>
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status" name="status">
+        @for (option of statusOptions; track option) {
+          <mat-option [value]="option.status">{{ option.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="ml-4">
+      <mat-label>Start Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="startDate"
+        [max]="form.controls.targetDate.value"
+        placeholder="Start date"
+        formControlName="startDate"
+      />
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="startDate"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #startDate />
+      @if (form.controls.startDate.hasError("matDatepickerParse")) {
+        <mat-error>Invalid Date format</mat-error>
+      } @else if (form.controls.startDate.hasError("matDatepickerMax")) {
+        <mat-error>Can't be after Target Date</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="ml-4">
+      <mat-label>Target Date</mat-label>
+      <input
+        matInput
+        [min]="form.controls.startDate.value"
+        [matDatepicker]="targetDate"
+        placeholder="Target date"
+        formControlName="targetDate"
+      />
+      <mat-datepicker-toggle matIconSuffix [for]="targetDate" />
+      <mat-datepicker #targetDate />
+      @if (form.controls.targetDate.hasError("matDatepickerParse")) {
+        <mat-error>Invalid Date format</mat-error>
+      } @else if (form.controls.targetDate.hasError("matDatepickerMin")) {
+        <mat-error>Can't be before Start Date</mat-error>
+      }
+    </mat-form-field>
+  </div>
+  <button
+    mat-raised-button
+    [disabled]="form.invalid"
+    (click)="form.valid && onSubmit(form.value)"
+  >
+    Submit
+  </button>
+</form>
