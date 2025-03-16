@@ -45,6 +45,8 @@ const MOCK_EQUIPMENT_NAMES = [
 const getRandomFromArray = (array) =>
   array[Math.floor(Math.random() * array.length)];
 
+const MS_IN_DAY = 86400000;
+
 const getMockEquipment = (userId) =>
   Array.from(
     {
@@ -74,7 +76,9 @@ const getMockDB = () => {
         email: `${name.replace(" ", ".")}@demomail.com`,
       },
       status: "NOT_STARTED",
-      id: `offboarding_id_${i}`,
+      id: `${i}_offboarding_id`,
+      exitInterviewDate:
+        Date.now() + MS_IN_DAY * Math.floor(Math.random() * 3 + 1),
     };
   });
 };
@@ -102,7 +106,8 @@ app.get("/users/offboard", (_, res) => {
  * Get offboarding process by id
  */
 app.get("/users/offboard/:id", (req, res) => {
-  const process = mockDB.find(req.params.id);
+  const process = mockDB.find(({ id }) => id === req.params.id);
+
   if (process) {
     res.send(process);
   } else {
@@ -113,14 +118,14 @@ app.get("/users/offboard/:id", (req, res) => {
 /**
  * Update offboarding process entity
  */
-app.patch("/users/offboard/:id", ({params, body}, res) => {
+app.patch("/users/offboard/:id", ({ params, body }, res) => {
   res.send({ success: true });
 });
 
 /**
  * Complete offboarding process making it readonly
  */
-app.post("/users/offboard/:id/complete", ({params: {id}}, res) => {
+app.post("/users/offboard/:id/complete", ({ params: { id } }, res) => {
   res.send({ success: true });
 });
 
