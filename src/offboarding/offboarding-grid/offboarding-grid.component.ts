@@ -1,39 +1,30 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   computed,
-  effect,
-  inject,
   input,
   viewChild,
 } from "@angular/core";
-import {
-  OffboardingProcess,
-  OffboardingProcessService,
-} from "../offboarding-service";
-import { toSignal } from "@angular/core/rxjs-interop";
+import { OffboardingProcess } from "../offboarding-service";
 
 import { MatSort, MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
-import { getReactiveTableSource } from "../../grid/get-reactive-table-source";
+import {
+  applyFilter,
+  applyPaginator,
+  applySorting,
+  createReactiveDataSource,
+  TablePredicate,
+} from "../../grid/table-source-helpers";
 import { OffboardingStatusPipe } from "../offboarding-status";
 import { EquipmentCellComponent } from "../equipment-cell";
-
-const COLUMN_IDS = [
-  "name",
-  "email",
-  "department",
-  "equipment",
-  "status",
-] as const;
-
-type OffboardingGridColumnId = (typeof COLUMN_IDS)[number];
+import { OffboardingFilter } from "../offboarding-process-search-filter";
+import { pipe } from "ramda";
 
 const sortingDataAccessor = (
   data: OffboardingProcess,
-  column: OffboardingGridColumnId,
+  column: string,
 ): string | number => {
   switch (column) {
     case "department": {
@@ -55,6 +46,22 @@ const sortingDataAccessor = (
   }
 };
 
+const filterPredicate: TablePredicate<OffboardingProcess> = (data, filter) => {
+  const [statuses, searchText] = filter.toLowerCase().split("|");
+
+  const isSearchTextMatched = searchText
+    .toLowerCase()
+    .split(" ")
+    .every((token) => JSON.stringify(data).toLowerCase().includes(token));
+
+  const isStatusMatched = statuses
+    .toLowerCase()
+    .split(" ")
+    .some((token) => JSON.stringify(data).toLowerCase().includes(token));
+
+  return isSearchTextMatched && isStatusMatched;
+};
+
 @Component({
   selector: "app-offboarding-grid",
   imports: [
@@ -69,15 +76,32 @@ const sortingDataAccessor = (
 })
 export class OffboardingGridComponent {
   readonly processes = input<OffboardingProcess[]>([]);
+  readonly filter = input<OffboardingFilter>();
+
   private readonly paginator = viewChild(MatPaginator);
   private readonly sort = viewChild(MatSort);
+  private readonly stringifiedFilter = computed(() => {
+    const filter = this.filter();
+    if (filter) {
+      const statuses = filter.status?.join(" ") ?? "";
 
-  readonly displayedColumns = COLUMN_IDS;
-
-  readonly source = getReactiveTableSource({
-    paginator: this.paginator,
-    sort: this.sort,
-    dataSource: this.processes,
-    sortAcessor: sortingDataAccessor,
+      return `${statuses}|${filter.searchText ?? ""}`;
+    }
+    return "";
   });
+
+  readonly displayedColumns = [
+    "name",
+    "email",
+    "department",
+    "equipment",
+    "status",
+  ];
+
+  readonly source = pipe(
+    createReactiveDataSource<OffboardingProcess>,
+    applyPaginator(this.paginator),
+    applyFilter(this.stringifiedFilter, filterPredicate),
+    applySorting(this.sort, sortingDataAccessor),
+  )(this.processes);
 }

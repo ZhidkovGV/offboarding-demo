@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from "@angular/core";
 import { OffboardingStatus } from "../offboarding-service";
 
-const OFFBOARDING_STATUS_TO_LABEL = new Map<OffboardingStatus, string>([
+export const OFFBOARDING_STATUS_TO_LABEL = new Map<OffboardingStatus, string>([
   [OffboardingStatus.NotStarted, "Not Started"],
   [OffboardingStatus.InProgress, "In Progress"],
   [OffboardingStatus.Complete, "Offboarded"],
