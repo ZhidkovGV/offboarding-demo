@@ -53,8 +53,8 @@ export interface OffboardingProcess {
   exitInterviewDate?: number;
   reciever?: OffboardingReciever;
   jobCertificateRecieved?: boolean;
-  targetDate?: number;
-  startDate?: number;
+  targetDate: number;
+  startDate: number;
 }
 
 export interface PatchOffboardingProcess {
