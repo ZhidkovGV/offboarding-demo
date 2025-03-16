@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { HeaderComponent } from "../layout/header/header.component";
-import {Location} from '@angular/common';
-
+import { Location } from "@angular/common";
 
 @Component({
   selector: "app-not-found",
