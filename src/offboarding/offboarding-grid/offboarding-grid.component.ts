@@ -15,52 +15,11 @@ import {
   applyPaginator,
   applySorting,
   createReactiveDataSource,
-  TablePredicate,
 } from "../../grid/table-source-helpers";
 import { OffboardingStatusPipe } from "../offboarding-status";
 import { EquipmentCellComponent } from "../equipment-cell";
 import { OffboardingFilter } from "../offboarding-process-search-filter";
 import { pipe } from "ramda";
-
-const sortingDataAccessor = (
-  data: OffboardingProcess,
-  column: string,
-): string | number => {
-  switch (column) {
-    case "department": {
-      return data.employee.department;
-    }
-    case "name": {
-      return data.employee.name;
-    }
-    case "email": {
-      return data.employee.email;
-    }
-    case "status": {
-      return data.status;
-    }
-
-    default: {
-      return "";
-    }
-  }
-};
-
-const filterPredicate: TablePredicate<OffboardingProcess> = (data, filter) => {
-  const [statuses, searchText] = filter.toLowerCase().split("|");
-
-  const isSearchTextMatched = searchText
-    .toLowerCase()
-    .split(" ")
-    .every((token) => JSON.stringify(data).toLowerCase().includes(token));
-
-  const isStatusMatched = statuses
-    .toLowerCase()
-    .split(" ")
-    .some((token) => JSON.stringify(data).toLowerCase().includes(token));
-
-  return isSearchTextMatched && isStatusMatched;
-};
 
 @Component({
   selector: "app-offboarding-grid",
@@ -83,9 +42,7 @@ export class OffboardingGridComponent {
   private readonly stringifiedFilter = computed(() => {
     const filter = this.filter();
     if (filter) {
-      const statuses = filter.status?.join(" ") ?? "";
-
-      return `${statuses}|${filter.searchText ?? ""}`;
+      return this.getFilterString(filter);
     }
     return "";
   });
@@ -98,10 +55,65 @@ export class OffboardingGridComponent {
     "status",
   ];
 
+  private getFilterString(filter: OffboardingFilter) {
+    const statuses = filter.status?.join(" ") ?? "";
+
+    return `${statuses}|${filter.searchText ?? ""}`;
+  }
+
+  private readonly filterPredicate = (
+    { employee, status }: OffboardingProcess,
+    filter: string,
+  ) => {
+    debugger;
+    const [statuses, searchText] = filter.split("|");
+
+    const searchTokens = searchText.toLowerCase().split(" ");
+    const searchIn = [
+      employee.name,
+      employee.department,
+      ...employee.equipment.map((item) => item.name),
+    ].map((field) => field.toLowerCase());
+
+    const isSearchTextMatched = searchTokens.every((field) =>
+      searchIn.some((token) => token.includes(field)),
+    );
+
+    const isStatusMatched = statuses
+      .split(" ")
+      .some((token) => status.includes(token));
+
+    return isSearchTextMatched && isStatusMatched;
+  };
+
+  private readonly sortingDataAccessor = (
+    data: OffboardingProcess,
+    column: string,
+  ): string | number => {
+    switch (column) {
+      case "department": {
+        return data.employee.department;
+      }
+      case "name": {
+        return data.employee.name;
+      }
+      case "email": {
+        return data.employee.email;
+      }
+      case "status": {
+        return data.status;
+      }
+
+      default: {
+        return "";
+      }
+    }
+  };
+
   readonly source = pipe(
     createReactiveDataSource<OffboardingProcess>,
     applyPaginator(this.paginator),
-    applyFilter(this.stringifiedFilter, filterPredicate),
-    applySorting(this.sort, sortingDataAccessor),
+    applyFilter(this.stringifiedFilter, this.filterPredicate),
+    applySorting(this.sort, this.sortingDataAccessor),
   )(this.processes);
 }
