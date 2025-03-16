@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OffboardingMainComponent } from './offboarding-main.component';
 
-describe('OffboardingMainComponent', () => {
+describe(OffboardingMainComponent.name, () => {
   let component: OffboardingMainComponent;
   let fixture: ComponentFixture<OffboardingMainComponent>;
 
