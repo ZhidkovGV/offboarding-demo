@@ -20,6 +20,10 @@ import { OffboardingStatusPipe } from "../offboarding-status";
 import { EquipmentCellComponent } from "../equipment-cell";
 import { OffboardingFilter } from "../offboarding-process-search-filter";
 import { pipe } from "ramda";
+import { DatePipe } from "@angular/common";
+import { MatIcon } from "@angular/material/icon";
+import { MatTooltip } from "@angular/material/tooltip";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-offboarding-grid",
@@ -29,6 +33,10 @@ import { pipe } from "ramda";
     MatPaginatorModule,
     OffboardingStatusPipe,
     EquipmentCellComponent,
+    DatePipe,
+    MatIcon,
+    MatTooltip,
+    RouterLink
   ],
   templateUrl: "./offboarding-grid.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -53,6 +61,8 @@ export class OffboardingGridComponent {
     "department",
     "equipment",
     "status",
+    "jobCertificate",
+    "interviewDate",
   ];
 
   private getFilterString(filter: OffboardingFilter) {
@@ -65,7 +75,6 @@ export class OffboardingGridComponent {
     { employee, status }: OffboardingProcess,
     filter: string,
   ) => {
-    debugger;
     const [statuses, searchText] = filter.split("|");
 
     const searchTokens = searchText.toLowerCase().split(" ");
@@ -102,6 +111,9 @@ export class OffboardingGridComponent {
       }
       case "status": {
         return data.status;
+      }
+      case "interviewDate": {
+        return data.exitInterviewDate ?? 0;
       }
 
       default: {
