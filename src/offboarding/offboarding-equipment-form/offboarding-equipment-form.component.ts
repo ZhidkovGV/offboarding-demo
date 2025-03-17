@@ -144,6 +144,8 @@ export class OffboardingEquipmentFormComponent {
     effect(() => {
       if (this.isCompleted()) {
         this.form.disable();
+      } else {
+        this.form.enable();
       }
     });
   }

@@ -1,6 +1,6 @@
 <form
   [formGroup]="form"
-  class="flex flex-col md:flex-row mt-2 justify-between md:items-center items-end"
+  class="flex flex-col md:flex-row mt-8 justify-between md:items-center items-end"
 >
   <div class="flex flex-col md:flex-row w-full md:w-1/2">
     <mat-form-field appearance="outline" class="w-full">
@@ -34,6 +34,8 @@
         <mat-error>Invalid Date format</mat-error>
       } @else if (form.controls.startDate.hasError("matDatepickerMax")) {
         <mat-error>Can't be after Target Date</mat-error>
+      } @else if (form.controls.startDate.hasError("required")) {
+        <mat-error>Start Date is required</mat-error>
       }
     </mat-form-field>
 
@@ -52,6 +54,8 @@
         <mat-error>Invalid Date format</mat-error>
       } @else if (form.controls.targetDate.hasError("matDatepickerMin")) {
         <mat-error>Can't be before Start Date</mat-error>
+      } @else if (form.controls.targetDate.hasError("required")) {
+        <mat-error>Target Date is required</mat-error>
       }
     </mat-form-field>
   </div>

@@ -76,6 +76,8 @@ export class CertificateFormComponent {
     effect(() => {
       if (this.isCompleted()) {
         this.form.disable();
+      } else {
+        this.form.enable();
       }
     });
 
