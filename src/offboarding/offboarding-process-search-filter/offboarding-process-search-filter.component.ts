@@ -18,15 +18,11 @@ import {
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { OFFBOARDING_STATUS_LABELS } from "../offboarding-status";
 import { OffboardingStatus } from "../offboarding-service";
+import { InferOutput } from "../../core/generic";
 
 const FORM_CHANGE_DEBOUNCE = 200;
 
-export type OffboardingFilter =
-  OffboardingProcessSearchFilterComponent["filterChange"] extends OutputRef<
-    infer T
-  >
-    ? T
-    : never;
+export type OffboardingFilter = InferOutput<OffboardingProcessSearchFilterComponent, 'filterChange'>
 
 @Component({
   selector: "app-offboarding-process-search-filter",

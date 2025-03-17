@@ -1,15 +1,22 @@
-<form [formGroup]="form" class="flex mt-2 justify-between items-center">
-  <div>
-    <mat-form-field appearance="outline">
+<form
+  [formGroup]="form"
+  class="flex flex-col md:flex-row mt-2 justify-between md:items-center items-end"
+>
+  <div class="flex-col md:flex-row">
+    <mat-form-field appearance="outline" class="w-full">
       <mat-label>Status</mat-label>
       <mat-select formControlName="status" name="status">
         @for (option of statusOptions; track option) {
-          <mat-option [value]="option.status">{{ option.label }}</mat-option>
+          <mat-option
+            [value]="option.status"
+            [disabled]="option.status === 'COMPLETE' && isReadyToComplete()"
+            >{{ option.label }}</mat-option
+          >
         }
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="ml-4">
+    <mat-form-field appearance="outline" class="md:ml-4 w-full">
       <mat-label>Start Date</mat-label>
       <input
         matInput
@@ -30,7 +37,7 @@
       }
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="ml-4">
+    <mat-form-field appearance="outline" class="md:ml-4 w-full">
       <mat-label>Target Date</mat-label>
       <input
         matInput
@@ -48,11 +55,17 @@
       }
     </mat-form-field>
   </div>
-  <button
-    mat-raised-button
-    [disabled]="form.invalid"
-    (click)="form.valid && onSubmit(form.value)"
-  >
-    Submit
-  </button>
+  @if (!isCompleted()) {
+    <button
+      mat-raised-button
+      [disabled]="form.invalid"
+      (click)="form.valid && onSubmit(form.value)"
+    >
+      Submit
+    </button>
+  } @else {
+    <button mat-raised-button (click)="onReactivate(form.value)">
+      Reactivate
+    </button>
+  }
 </form>

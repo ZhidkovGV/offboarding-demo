@@ -13,26 +13,32 @@
 
   @if (process) {
     <div class="mt-8 flex-col">
-      <mat-expansion-panel [expanded]="process.startDate && process.targetDate">
+      <mat-expansion-panel expanded>
         <mat-expansion-panel-header>
           <mat-panel-title class="text-xl">General Info</mat-panel-title>
         </mat-expansion-panel-header>
-        <app-offboarding-general-form [process]="process" />
+        <app-offboarding-general-form
+          [process]="process"
+          (valueChange)="onGeneralDataChange($event)"
+          [isCompleted]="process.status === 'COMPLETE'"
+        />
       </mat-expansion-panel>
 
       <div class="mt-2">
-        <mat-expansion-panel
-          [expanded]="process.jobCertificateRecieved && process.targetDate"
-        >
+        <mat-expansion-panel expanded>
           <mat-expansion-panel-header>
             <mat-panel-title class="text-xl"> Job Certificate </mat-panel-title>
           </mat-expansion-panel-header>
-          <app-certificate-form />
+          <app-certificate-form
+            [process]="process"
+            (valueChange)="onCeritificateFormChange($event)"
+            [isCompleted]="process.status === 'COMPLETE'"
+          />
         </mat-expansion-panel>
       </div>
 
       <div class="mt-2">
-        <mat-expansion-panel>
+        <mat-expansion-panel expanded>
           <mat-expansion-panel-header>
             <mat-panel-title class="text-xl"> Exit Interview </mat-panel-title>
           </mat-expansion-panel-header>
@@ -41,7 +47,7 @@
       </div>
 
       <div class="mt-2">
-        <mat-expansion-panel>
+        <mat-expansion-panel expanded>
           <mat-expansion-panel-header>
             <mat-panel-title class="text-xl"> Equipment </mat-panel-title>
           </mat-expansion-panel-header>

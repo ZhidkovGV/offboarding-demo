@@ -4,12 +4,16 @@ import {
   BehaviorSubject,
   exhaustMap,
   iif,
+  map,
   Observable,
   of,
   tap,
 } from "rxjs";
-import { OffboardingProcess } from "./offboarding.types";
-import { BaseUrl } from "../../core/generic";
+import {
+  OffboardingProcess,
+  PatchOffboardingProcess,
+} from "./offboarding.types";
+import { BaseUrl, GenericResponse } from "../../core/generic";
 
 @Injectable({
   providedIn: "root",
@@ -41,12 +45,10 @@ export class OffboardingProcessService {
     );
   }
 
-  patch(id: string, {}): Observable<boolean> {
-    return of(true);
-  }
-
-  complete(id: string): Observable<boolean> {
-    return of(true);
+  patch(patch: PatchOffboardingProcess): Observable<boolean> {
+    return this.client
+      .patch<GenericResponse>(this.offboardProcessUrl, patch)
+      .pipe(map(({ success }) => success));
   }
 
   private processes$ = new BehaviorSubject<OffboardingProcess[] | null>(null);

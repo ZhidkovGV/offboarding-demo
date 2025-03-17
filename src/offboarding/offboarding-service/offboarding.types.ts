@@ -53,6 +53,7 @@ export interface OffboardingProcess {
   exitInterviewDate?: number;
   reciever?: OffboardingReciever;
   jobCertificateRecieved?: boolean;
+  jobCertificateDate?: number;
   targetDate: number;
   startDate: number;
 }
@@ -60,6 +61,8 @@ export interface OffboardingProcess {
 export interface PatchOffboardingProcess {
   id: string;
   jobCertificateRecieved?: boolean;
+  jobCertificateDate?: number;
+  status?: OffboardingStatus;
   targetDate?: number;
   startDate?: number;
   exitInterviewNote?: string;

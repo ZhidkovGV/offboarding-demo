@@ -1,1 +1,46 @@
-<p>certificate-form works!</p>
+<form
+  [formGroup]="form"
+  class="flex md:flex-row flex-col mt-2 justify-between md:items-center items-end"
+>
+  <div class="flex">
+    <p class="text-bold text-l flex-col flex-inline items-start">
+      <mat-checkbox formControlName="jobCertificateRecieved">
+        Recived
+      </mat-checkbox>
+    </p>
+
+    <mat-form-field appearance="outline" class="ml-4">
+      <mat-label>Recieved Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="jobCertificateDate"
+        [max]="maxRecievedDate"
+        [min]="minRecievedDate()"
+        formControlName="jobCertificateDate"
+      />
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="jobCertificateDate"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #jobCertificateDate />
+      @if (form.controls.jobCertificateDate.hasError("matDatepickerParse")) {
+        <mat-error>Invalid Date format</mat-error>
+      } @else if (
+        form.controls.jobCertificateDate.hasError("matDatepickerMax")
+      ) {
+        <mat-error>Can't be in future</mat-error>
+      } @else if (
+        form.controls.jobCertificateDate.hasError("matDatepickerMin")
+      ) {
+        <mat-error>Can't be before Start Date</mat-error>
+      }
+    </mat-form-field>
+  </div>
+  <button
+    mat-raised-button
+    [disabled]="form.invalid"
+    (click)="form.valid && onSubmit(form.value)"
+  >
+    Submit
+  </button>
+</form>

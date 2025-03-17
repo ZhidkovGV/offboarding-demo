@@ -34,6 +34,8 @@ export interface OffboardingGeneralForm {
 })
 export class OffboardingGeneralFormComponent {
   readonly process = input<OffboardingProcess>();
+  readonly isReadyToComplete = input<boolean>(false);
+  readonly isCompleted = input<boolean>(false);
 
   private readonly fb = inject(NonNullableFormBuilder);
 
@@ -49,7 +51,7 @@ export class OffboardingGeneralFormComponent {
     }),
   });
 
-  readonly statusOptions = OFFBOARDING_STATUS_LABELS
+  readonly statusOptions = OFFBOARDING_STATUS_LABELS;
 
   readonly valueChange = output<OffboardingGeneralForm>();
 
@@ -64,9 +66,22 @@ export class OffboardingGeneralFormComponent {
         });
       }
     });
+
+    effect(() => {
+      if (this.isCompleted()) {
+        this.form.disable();
+      }
+    });
   }
 
   onSubmit(form: Partial<OffboardingGeneralForm>): void {
-    this.valueChange.emit(form as OffboardingGeneralForm); // cast to full interface since all fields are requied to submit
+    this.valueChange.emit(form as OffboardingGeneralForm);
+  }
+
+  onReactivate(form: Partial<OffboardingGeneralForm>): void {
+    this.valueChange.emit({
+      ...form,
+      status: OffboardingStatus.InProgress,
+    } as OffboardingGeneralForm);
   }
 }
