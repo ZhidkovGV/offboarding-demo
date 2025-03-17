@@ -7,7 +7,7 @@ import { HeaderComponent } from "../layout/header/header.component";
   imports: [RouterOutlet, HeaderComponent],
   template: `
     <app-header>
-      <span header-text>Demo</span>
+      <span header-text>Offboarding Demo</span>
     </app-header>
     <main class="flex-column flex-auto p-4 overflow-x-hidden">
       <router-outlet />
