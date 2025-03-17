@@ -7,7 +7,6 @@ import { Location } from "@angular/common";
   selector: "app-not-found",
   imports: [MatButtonModule, HeaderComponent],
   templateUrl: "./not-found.component.html",
-  styleUrl: "./not-found.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotFoundComponent {

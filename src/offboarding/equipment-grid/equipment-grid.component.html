@@ -1,0 +1,50 @@
+<div class="overflow-auto">
+  <table mat-table [dataSource]="source" matSort class="h-auto">
+    <ng-container matColumnDef="name" sticky>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Equipment Name</th>
+      <td mat-cell *matCellDef="let row">
+        <span class="text-bold">{{ row.name }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.status | equipmentStatus }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ownerName" sticky>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Owner Name</th>
+      <td mat-cell *matCellDef="let row">
+        <a
+          class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          [routerLink]="`/offboarding/processes/${row.processId}`"
+          >{{ row.ownerName }}</a
+        >
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="note" sticky>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Note</th>
+      <td mat-cell *matCellDef="let row">{{ row.note }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+    <tr class="mat-row h-120" *matNoDataRow>
+      <td class="mat-cell" colspan="100%">
+        <div class="flex items-center justify-center text-xl text-bold">
+          No data
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<mat-paginator
+  [pageSizeOptions]="[10]"
+  [showFirstLastButtons]="true"
+  aria-label="Select page of equipments"
+/>

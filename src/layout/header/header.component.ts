@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { DemoService } from "../../core/demo/demo.service";
 
@@ -6,10 +6,10 @@ import { DemoService } from "../../core/demo/demo.service";
   selector: "app-header",
   imports: [MatButtonModule],
   templateUrl: "./header.component.html",
-  styleUrl: "./header.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  demoService = inject(DemoService);
+  private readonly demoService = inject(DemoService);
 
   resetDemo(): void {
     this.demoService.resetDemo().subscribe();

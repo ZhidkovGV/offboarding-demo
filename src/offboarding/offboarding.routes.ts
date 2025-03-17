@@ -4,6 +4,7 @@ import { ProcessDetailsComponent } from "./process-details/process-details.compo
 import { OffboardingMainComponent } from "./offboarding-main/offboarding-main.component";
 import { OffboardingProcessesComponent } from "./offboarding-processes";
 import { offboardingProcessExistsGuard } from "./offboarding-guards";
+import { EquipmentGridComponent } from "./equipment-grid/equipment-grid.component";
 
 export const OFFBOARDING_ROUTES: Routes = [
   {
@@ -20,7 +21,7 @@ export const OFFBOARDING_ROUTES: Routes = [
           },
           {
             path: "equipment",
-            component: OffboardingProcessesComponent,
+            component: EquipmentGridComponent,
           },
           {
             path: "",
