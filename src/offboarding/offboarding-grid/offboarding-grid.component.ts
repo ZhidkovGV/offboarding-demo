@@ -118,6 +118,15 @@ export class OffboardingGridComponent {
       case "interviewDate": {
         return data.exitInterviewDate ?? 0;
       }
+      case "startDate": {
+        return data.startDate ?? 0;
+      }
+      case "targetDate": {
+        return data.targetDate ?? 0;
+      }
+      case "jobCertificateDate": {
+        return data.jobCertificateDate ?? 0;
+      }
 
       default: {
         return "";
