@@ -1,4 +1,6 @@
 const express = require("express");
+const cors = require("cors");
+
 const app = express();
 const PORT = 3000;
 const MOCK_OFFBOARDINGS_AMOUNT = 100;
@@ -87,22 +89,16 @@ const getMockDB = () => {
 
 let mockDB = getMockDB();
 
-// Disable CORS
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept",
-  );
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-  );
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
+  res.header("Access-Control-Allow-Origin", "*"); // Any origin
+  res.header("Access-Control-Allow-Methods", "*"); // Any method
+  res.header("Access-Control-Allow-Headers", "*"); // Any header
+  res.header("Access-Control-Allow-Credentials", "true");
   next();
 });
+
+// Handle preflight requests
+app.options("*", cors());
 
 app.use(express.json());
 
@@ -575,3 +571,5 @@ app.get("/cities", (_, res) => {
 app.listen(PORT, () => {
   console.log(`Mock app listening on port ${PORT}`);
 });
+
+console.log(Math.random() * 1000)
