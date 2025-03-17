@@ -88,14 +88,23 @@ const getMockDB = () => {
 let mockDB = getMockDB();
 
 // Disable CORS
-app.use((_, res, next) => {
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept",
   );
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+  );
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
   next();
 });
+
+app.use(express.json());
 
 /**
  * Get all offboarding processes
@@ -120,7 +129,10 @@ app.get("/users/offboard/:id", (req, res) => {
 /**
  * Update offboarding process entity
  */
-app.patch("/users/offboard/:id", ({ params, body }, res) => {
+app.patch("/users/offboard", (req, res) => {
+  const { id } = req.body;
+  const process = mockDB.find((v) => v.id === id);
+  Object.assign(process, req.body);
   res.send({ success: true });
 });
 
