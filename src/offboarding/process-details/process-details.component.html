@@ -1,14 +1,19 @@
 @let process = processDetails();
 <div class="w-full h-full flex flex-col">
-  <div class="flex items-start justify-start">
-    <button mat-icon-button>
-      <mat-icon
-        fontIcon="arrow_back_ios"
-        class="cursor-pointer"
-        (click)="goBack()"
-      ></mat-icon>
-    </button>
-    <h2 class="text-4xl">{{ process?.employee?.name }}</h2>
+  <div class="flex items-start justify-between">
+    <div class="flex">
+      <button mat-icon-button>
+        <mat-icon
+          fontIcon="arrow_back_ios"
+          class="cursor-pointer"
+          (click)="goBack()"
+        />
+      </button>
+      <h2 class="text-4xl">{{ process?.employee?.name }}</h2>
+    </div>
+    @if (isReadyToComplete() && process?.status !== "COMPLETE") {
+      <button mat-flat-button (click)="onOffboard()">Offboard</button>
+    }
   </div>
 
   @if (process) {
@@ -21,6 +26,7 @@
           [process]="process"
           (valueChange)="onGeneralDataChange($event)"
           [isCompleted]="process.status === 'COMPLETE'"
+          [isReadyToComplete]="isReadyToComplete()"
         />
       </mat-expansion-panel>
 
@@ -42,7 +48,11 @@
           <mat-expansion-panel-header>
             <mat-panel-title class="text-xl"> Exit Interview </mat-panel-title>
           </mat-expansion-panel-header>
-          <app-exit-interview-form />
+          <app-exit-interview-form
+            [process]="process"
+            (valueChange)="onExitFormChange($event)"
+            [isCompleted]="process.status === 'COMPLETE'"
+          />
         </mat-expansion-panel>
       </div>
 
@@ -51,7 +61,11 @@
           <mat-expansion-panel-header>
             <mat-panel-title class="text-xl"> Equipment </mat-panel-title>
           </mat-expansion-panel-header>
-          <app-offboarding-equipment-form />
+          <app-offboarding-equipment-form
+            [process]="process"
+            [isCompleted]="process.status === 'COMPLETE'"
+            (valueChange)="onEquipmentFormChange($event)"
+          />
         </mat-expansion-panel>
       </div>
     </div>

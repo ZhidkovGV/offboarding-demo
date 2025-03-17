@@ -80,7 +80,10 @@ export class CertificateFormComponent {
     });
 
     effect(() => {
-      if (this.isRecieved()) {
+      if (
+        this.isRecieved() &&
+        this.form.controls.jobCertificateRecieved.enabled
+      ) {
         this.form.controls.jobCertificateDate.enable();
       } else {
         this.form.controls.jobCertificateDate.disable();

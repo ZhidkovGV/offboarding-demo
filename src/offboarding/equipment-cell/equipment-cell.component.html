@@ -1,21 +1,23 @@
-@for (item of equipment(); track item.id; let last = $last) {
-  <span
-    class="flex-inline items-end cursor-pointer"
-    [matTooltip]="item.status | equipmentStatus"
-  >
-    <span>{{ item.name }}</span>
-    @switch (item.status) {
-      @case ("RETURNED") {
-        <span class="text-green-500 h-4">
-          <mat-icon fontIcon="check_circle" inline />
-        </span>
+<span class="max-w-full truncate">
+  @for (item of equipment(); track item.id; let last = $last) {
+    <span
+      class="flex-inline items-end cursor-pointer"
+      [matTooltip]="item.note ? item.note : (item.status | equipmentStatus)"
+    >
+      <span>{{ item.name }}</span>
+      @switch (item.status) {
+        @case ("RETURNED") {
+          <span class="text-green-500 h-4">
+            <mat-icon fontIcon="check_circle" inline />
+          </span>
+        }
+        @case ("LOST") {
+          <span class="text-red-500 h-4">
+            <mat-icon fontIcon="cancel" inline />
+          </span>
+        }
       }
-      @case ("LOST") {
-        <span class="text-red-500 h-4">
-          <mat-icon fontIcon="cancel" inline />
-        </span>
-      }
-    }
-  </span>
-  <span>{{ last ? "" : ", " }}</span>
-}
+    </span>
+    <span>{{ last ? "" : ", " }}</span>
+  }
+</span>

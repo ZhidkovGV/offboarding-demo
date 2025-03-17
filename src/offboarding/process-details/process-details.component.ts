@@ -4,8 +4,11 @@ import {
   computed,
   inject,
 } from "@angular/core";
-import { OffboardingProcessService } from "../offboarding-service";
-import { ActivatedRoute } from "@angular/router";
+import {
+  OffboardingProcessService,
+  OffboardingStatus,
+} from "../offboarding-service";
+import { ActivatedRoute, Router } from "@angular/router";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { MatSpinner } from "@angular/material/progress-spinner";
 import { auditTime } from "rxjs";
@@ -17,8 +20,14 @@ import {
   OffboardingGeneralForm,
   OffboardingGeneralFormComponent,
 } from "../offboarding-general-form";
-import { OffboardingEquipmentFormComponent } from "../offboarding-equipment-form/offboarding-equipment-form.component";
-import { ExitInterviewFormComponent } from "../exit-interview-form/exit-interview-form.component";
+import {
+  EquipmentForm,
+  OffboardingEquipmentFormComponent,
+} from "../offboarding-equipment-form/offboarding-equipment-form.component";
+import {
+  ExitInterviewForm,
+  ExitInterviewFormComponent,
+} from "../exit-interview-form";
 import { CertificateForm, CertificateFormComponent } from "../certificate-form";
 import { WINDOW } from "../../core/generic";
 
@@ -41,9 +50,10 @@ const FIRST_RENDER_DELAY = 400;
 export class ProcessDetailsComponent {
   private readonly offboardingService = inject(OffboardingProcessService);
   private readonly id = inject(ActivatedRoute).snapshot.paramMap.get("id")!;
+  private readonly router = inject(Router);
 
   readonly processDetails = toSignal(
-    this.offboardingService.get(this.id).pipe(auditTime(FIRST_RENDER_DELAY)),
+    this.offboardingService.get$(this.id).pipe(auditTime(FIRST_RENDER_DELAY)),
   );
 
   readonly isReadyToComplete = computed(() => {
@@ -55,7 +65,7 @@ export class ProcessDetailsComponent {
         exitInterviewNote,
       } = process;
 
-      return (
+      return !!(
         jobCertificateRecieved &&
         exitInterviewNote &&
         equipment.every(
@@ -104,5 +114,39 @@ export class ProcessDetailsComponent {
         id: this.id,
       })
       .subscribe();
+  }
+
+  onExitFormChange({
+    exitInterviewDate,
+    exitInterviewNote,
+  }: ExitInterviewForm): void {
+    this.offboardingService
+      .patch({
+        exitInterviewDate: exitInterviewDate?.utc().valueOf(),
+        exitInterviewNote,
+        id: this.id,
+      })
+      .subscribe();
+  }
+
+  onEquipmentFormChange({ equipment, reciever }: EquipmentForm): void {
+    this.offboardingService
+      .patch({
+        equipment,
+        reciever,
+        id: this.id,
+      })
+      .subscribe();
+  }
+
+  onOffboard(): void {
+    this.offboardingService
+      .patch({
+        status: OffboardingStatus.Complete,
+        id: this.id,
+      })
+      .subscribe(() => {
+        this.router.navigate([".."]);
+      });
   }
 }

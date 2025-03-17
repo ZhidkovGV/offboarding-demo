@@ -36,7 +36,7 @@ import { RouterLink } from "@angular/router";
     DatePipe,
     MatIcon,
     MatTooltip,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: "./offboarding-grid.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -59,9 +59,12 @@ export class OffboardingGridComponent {
     "name",
     "department",
     "email",
-    "equipment",
     "status",
+    "startDate",
+    "targetDate",
+    "equipment",
     "jobCertificate",
+    "jobCertificateDate",
     "interviewDate",
   ];
 

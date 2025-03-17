@@ -7,6 +7,11 @@ const EQUIPMENT_STATUS_TO_LABEL = new Map<EquipmentStatus, string>([
   [EquipmentStatus.Lost, "Lost"],
 ]);
 
+export const EQUIPMENT_STATUS_LABELS = Array.from(
+  EQUIPMENT_STATUS_TO_LABEL,
+  ([status, label]) => ({ status, label }),
+);
+
 @Pipe({
   name: "equipmentStatus",
 })

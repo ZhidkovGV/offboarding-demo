@@ -36,6 +36,28 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="startDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Process start</th>
+      <td mat-cell *matCellDef="let row">
+        @if (row.startDate) {
+          {{ row.startDate | date }}
+        } @else {
+          <span class="text-bold">-</span>
+        }
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="targetDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Process end</th>
+      <td mat-cell *matCellDef="let row">
+        @if (row.targetDate) {
+          {{ row.targetDate | date }}
+        } @else {
+          <span class="text-bold">-</span>
+        }
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="equipment">
       <th mat-header-cell *matHeaderCellDef>Equipment</th>
       <td mat-cell *matCellDef="let row">
@@ -54,8 +76,19 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="jobCertificateDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Certificate Recived</th>
+      <td mat-cell *matCellDef="let row">
+        @if (row.jobCertificateDate) {
+          {{ row.jobCertificateDate | date }}
+        } @else {
+          <span class="text-bold">-</span>
+        }
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="jobCertificate">
-      <th mat-header-cell *matHeaderCellDef class="max-w-20">
+      <th mat-header-cell *matHeaderCellDef class="max-w-25">
         Job Certificate
       </th>
       <td mat-cell *matCellDef="let row">

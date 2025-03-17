@@ -1,1 +1,52 @@
-<p>exit-interview-form works!</p>
+<form
+  [formGroup]="form"
+  class="flex md:flex-row flex-col mt-2 justify-between md:items-center items-end"
+>
+  <div class="flex md:flex-row flex-col flex-auto w-full">
+    <mat-form-field appearance="outline" class="max-h-4">
+      <mat-label>Interview Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="jobCertificateDate"
+        [max]="maxRecievedDate"
+        [min]="minRecievedDate()"
+        formControlName="exitInterviewDate"
+      />
+      <mat-datepicker-toggle matIconSuffix [for]="jobCertificateDate" />
+      <mat-datepicker #jobCertificateDate />
+      @if (form.controls.exitInterviewDate.hasError("matDatepickerParse")) {
+        <mat-error>Invalid Date format</mat-error>
+      } @else if (
+        form.controls.exitInterviewDate.hasError("matDatepickerMax")
+      ) {
+        <mat-error>Can't be in future</mat-error>
+      } @else if (
+        form.controls.exitInterviewDate.hasError("matDatepickerMin")
+      ) {
+        <mat-error>Can't be before Start Date</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field
+      appearance="outline"
+      class="md:w-100 w-full md:ml-4 md:mt-0 mt-16"
+    >
+      <mat-label>Note</mat-label>
+      <textarea matInput formControlName="exitInterviewNote"></textarea>
+      @if (form.controls.exitInterviewNote.hasError("required")) {
+        <mat-error>Note is required</mat-error>
+      } @else if (form.controls.exitInterviewDate.hasError("maxlength")) {
+        <mat-error>Cannot be longer than 220 chars</mat-error>
+      }
+    </mat-form-field>
+  </div>
+  @if (!isCompleted()) {
+    <button
+      mat-raised-button
+      [disabled]="form.invalid"
+      (click)="form.valid && onSubmit(form.value)"
+    >
+      Submit
+    </button>
+  }
+</form>

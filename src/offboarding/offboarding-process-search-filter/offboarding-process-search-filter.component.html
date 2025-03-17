@@ -1,5 +1,12 @@
-<form [formGroup]="filterForm">
-  <mat-form-field appearance="outline" floatLabel="always" class="w-100 mr-8">
+<form
+  [formGroup]="filterForm"
+  class="flex md:flex-row flex-col items-center md:justify-between md:items-start"
+>
+  <mat-form-field
+    appearance="outline"
+    floatLabel="always"
+    class="max-w-100 md:mr-8 w-full"
+  >
     <input
       type="text"
       aria-label="Employee name or department"
@@ -12,6 +19,7 @@
     name="ingredients"
     aria-label="Ingredients"
     formControlName="status"
+    class="w-fit h-full"
     multiple
   >
     @for (status of offboardingStatuses; track status.status) {
