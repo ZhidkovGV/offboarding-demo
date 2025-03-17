@@ -12,10 +12,11 @@ import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
 import { MatSelectModule } from "@angular/material/select";
 import { OFFBOARDING_STATUS_LABELS } from "../offboarding-status";
+import moment, { Moment } from "moment";
 
 export interface OffboardingGeneralForm {
-  startDate: Date;
-  targetDate: Date;
+  startDate: Moment;
+  targetDate: Moment;
   status: OffboardingStatus;
 }
 
@@ -40,10 +41,10 @@ export class OffboardingGeneralFormComponent {
   private readonly fb = inject(NonNullableFormBuilder);
 
   readonly form = this.fb.group({
-    startDate: this.fb.control<Date>(new Date(), {
+    startDate: this.fb.control<Moment>(moment(), {
       validators: Validators.required,
     }),
-    targetDate: this.fb.control<Date>(new Date(), {
+    targetDate: this.fb.control<Moment>(moment(), {
       validators: Validators.required,
     }),
     status: this.fb.control<OffboardingStatus>(OffboardingStatus.Unknown, {
@@ -60,8 +61,8 @@ export class OffboardingGeneralFormComponent {
       const process = this.process();
       if (process) {
         this.form.setValue({
-          startDate: new Date(process.startDate),
-          targetDate: new Date(process.targetDate),
+          startDate: moment(process.startDate),
+          targetDate: moment(process.targetDate),
           status: process.status,
         });
       }

@@ -85,8 +85,8 @@ export class ProcessDetailsComponent {
   }: OffboardingGeneralForm): void {
     this.offboardingService
       .patch({
-        startDate: startDate.getTime(),
-        targetDate: targetDate.getTime(),
+        startDate: startDate?.utc().valueOf(),
+        targetDate: targetDate?.utc().valueOf(),
         status,
         id: this.id,
       })
@@ -99,7 +99,7 @@ export class ProcessDetailsComponent {
   }: CertificateForm): void {
     this.offboardingService
       .patch({
-        jobCertificateDate: jobCertificateDate.utc().valueOf(),
+        jobCertificateDate: jobCertificateDate?.utc().valueOf(),
         jobCertificateRecieved,
         id: this.id,
       })

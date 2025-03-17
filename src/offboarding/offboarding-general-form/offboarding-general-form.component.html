@@ -2,14 +2,14 @@
   [formGroup]="form"
   class="flex flex-col md:flex-row mt-2 justify-between md:items-center items-end"
 >
-  <div class="flex-col md:flex-row">
+  <div class="flex flex-col md:flex-row w-full md:w-1/2">
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>Status</mat-label>
       <mat-select formControlName="status" name="status">
         @for (option of statusOptions; track option) {
           <mat-option
             [value]="option.status"
-            [disabled]="option.status === 'COMPLETE' && isReadyToComplete()"
+            [disabled]="option.status === 'COMPLETE' && !isReadyToComplete()"
             >{{ option.label }}</mat-option
           >
         }
