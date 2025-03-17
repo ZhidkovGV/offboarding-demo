@@ -57,8 +57,8 @@ export class OffboardingGridComponent {
 
   readonly displayedColumns = [
     "name",
-    "email",
     "department",
+    "email",
     "equipment",
     "status",
     "jobCertificate",
