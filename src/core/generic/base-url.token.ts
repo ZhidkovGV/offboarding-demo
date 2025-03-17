@@ -1,5 +1,5 @@
 import { InjectionToken } from "@angular/core";
-import { BASE_URL } from "../../../envirnoment/envirnoment";
+import { BASE_URL } from "../../../environment/envirnoment";
 
 /**
  * Provides base url adress via DI
